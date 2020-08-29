@@ -1,15 +1,16 @@
+package bfs;
+
 import graph.AdjSet;
 import graph.Graph;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * @author Daolin
- * @date 2020/08/28
- * 获得两个点之间的一条路径而不遍历所有节点
+ * @date 2020/08/29
  */
+
+
 public class Path {
     private int t;
     private Graph G;
@@ -33,20 +34,25 @@ public class Path {
         Arrays.fill(pre, -1);
 
         pre[s] = s;
-        dfs(s);
+        bfs(s);
     }
 
-    // 返回是否找到节点t(用于提前终止)
-    private boolean dfs(int v){
-        if(v == t) return true;
-        // 访问v的所有没被访问过的相邻顶点
-        for(int w : G.adj(v)) {
-            if (pre[w] == -1) {
-                pre[w] = v; // 由于从 v 到 w, 所以把pre[w] 记录为v
-                if(dfs(w)) return true;
+    private void bfs(int s){
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(s);
+
+        while (!queue.isEmpty()){
+            int v = queue.remove();
+            for(int w : G.adj(v)){
+                if(pre[w] == -1){
+                    queue.add(w);
+                    pre[w] = v;
+                }
+                if(w == t){
+                    return;
+                }
             }
         }
-        return false;
     }
 
     /**

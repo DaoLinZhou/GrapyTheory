@@ -1,13 +1,16 @@
+package bfs;
+
 import graph.AdjSet;
 import graph.Graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * @author Daolin
- * @date 2020/08/27
- * 求一个图的联通分量
+ * @date 2020/08/29
  */
 public class CC {
 
@@ -22,17 +25,26 @@ public class CC {
         Arrays.fill(visited, -1);
         for (int v = 0; v < G.V(); v++) {
             if (visited[v] == -1) {
-                dfs(v);
+                bfs(v);
                 ccount ++;
             }
         }
     }
 
-    private void dfs(int v){
-        visited[v] = ccount;
-        for(int w : G.adj(v))
-            if(visited[w] == -1)
-                dfs(w);
+    private void bfs(int s){
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(s);
+        visited[s] = ccount;
+
+        while (!queue.isEmpty()){
+            int v = queue.remove();
+            for(int w : G.adj(v)){
+                if(visited[w] == -1){
+                    queue.add(w);
+                    visited[w] = ccount;
+                }
+            }
+        }
     }
 
     // 获得这张图的联通分量的个数

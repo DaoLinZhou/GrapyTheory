@@ -1,58 +1,69 @@
+package dfs;
+
 import graph.AdjSet;
 import graph.Graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 /**
  * @author Daolin
- * @date 2020/08/27
- * 单源路径 (起始点固定)
+ * @date 2020/08/28
+ * 获得两个点之间的一条路径而不遍历所有节点
  */
-public class SingleSourcePath {
-
+public class Path {
+    private int t;
     private Graph G;
     private int s;
     private int[] pre;
 
-    public SingleSourcePath(Graph G, int s) {
+    /**
+     *
+     * @param G 图
+     * @param s 起始点
+     * @param t 终止点
+     */
+    public Path(Graph G, int s, int t) {
         G.validateVertex(s);
+        G.validateVertex(t);
+
         this.G = G;
         this.s = s;
+        this.t = t;
         pre = new int[G.V()];
         Arrays.fill(pre, -1);
+
         pre[s] = s;
         dfs(s);
     }
 
-    private void dfs(int v){
+    // 返回是否找到节点t(用于提前终止)
+    private boolean dfs(int v){
+        if(v == t) return true;
         // 访问v的所有没被访问过的相邻顶点
         for(int w : G.adj(v)) {
             if (pre[w] == -1) {
                 pre[w] = v; // 由于从 v 到 w, 所以把pre[w] 记录为v
-                dfs(w);
+                if(dfs(w)) return true;
             }
         }
+        return false;
     }
 
     /**
-     * @param t 终止点
-     * @return 判断起始点是否和 t 相连
+     * @return 两点是否相连
      */
-    public boolean isConnectedTo(int t){
-        G.validateVertex(t);
+    public boolean isConnected(){
         return pre[t] != -1;
     }
 
     /**
-     * @param t 终止点
-     * @return 获取起始点到终止点的一条路径
+     * @return 起始点到终止点的路径
      */
-    public Iterable<Integer> path(int t){
+    public Iterable<Integer> path(){
         ArrayList<Integer> res = new ArrayList<>();
-        if(!isConnectedTo(t)){
+        if(!isConnected()){
             return res;
         }
         int cur = t;
@@ -68,8 +79,14 @@ public class SingleSourcePath {
 
     public static void main(String[] args) {
         Graph g = new AdjSet("g.txt");
-        SingleSourcePath singleSourcePath = new SingleSourcePath(g, 0);
-        System.out.println(" 0 -> 6 : " + singleSourcePath.path(6));
-        System.out.println(" 0 -> 5 : " + singleSourcePath.path(5));
+        Path path = new Path(g, 0, 6);
+        System.out.println(" 0 -> 6 : " + path.path());
+
+        Path path2 = new Path(g, 0, 1);
+        System.out.println(" 0 -> 1 : " + path2.path());
+
+        Path path3 = new Path(g, 0, 5);
+        System.out.println(" 0 -> 5 : " + path3.path());
     }
+
 }

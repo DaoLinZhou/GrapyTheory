@@ -1,5 +1,5 @@
-import graph.AdjList;
-import graph.AdjMatrix;
+package dfs;
+
 import graph.AdjSet;
 import graph.Graph;
 
