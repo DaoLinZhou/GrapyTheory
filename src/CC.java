@@ -35,18 +35,19 @@ public class CC {
                 dfs(w);
     }
 
-    // 获得这张图的联通分量
+    // 获得这张图的联通分量的个数
     public int count(){
         return this.ccount;
     }
 
+    // 判断两点是否连接(在同一联通分量)
     public boolean isConnected(int v, int w){
         G.validateVertex(v);
         G.validateVertex(w);
         return visited[v] == visited[w];
     }
 
-
+    // 获取图的所有联通分量
     public ArrayList<Integer>[] components(){
         ArrayList<Integer>[] res = new ArrayList[ccount];
         for(int i = 0; i < ccount; i++){
