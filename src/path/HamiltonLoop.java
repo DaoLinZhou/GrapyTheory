@@ -1,12 +1,9 @@
-package dfs;
+package path;
 
 import graph.AdjSet;
 import graph.Graph;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 /**

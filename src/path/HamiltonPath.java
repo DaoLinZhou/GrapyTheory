@@ -1,4 +1,4 @@
-package dfs;
+package path;
 
 import graph.AdjSet;
 import graph.Graph;

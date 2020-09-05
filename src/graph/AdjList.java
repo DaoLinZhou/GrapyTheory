@@ -2,16 +2,13 @@ package graph;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author Daolin
  * @date 2020/08/25
  */
-public class AdjList implements Graph{
+public class AdjList implements Graph, Cloneable{
 
     private int V; // 顶点数
     private int E; // 边数
@@ -95,6 +92,33 @@ public class AdjList implements Graph{
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    @Override
+    public void removeEdge(int v, int w) {
+        validateVertex(v);
+        validateVertex(w);
+        adj[v].remove((Integer)w);
+        adj[w].remove((Integer)v);
+    }
+
+    @Override
+    public Object clone() {
+        AdjList cloned = null;
+        try {
+            cloned = (AdjList) super.clone();
+            cloned.adj = new LinkedList[V];
+            for(int v = 0; v < V; v++){
+                cloned.adj[v] = new LinkedList<>();
+                for(int w : this.adj[v]){
+                    cloned.adj[v].add(w);
+                }
+            }
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return cloned;
     }
 
     public static void main(String[] args) {

@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @author Daolin
  * @date 2020/08/25
  */
-public class AdjMatrix implements Graph{
+public class AdjMatrix implements Graph, Cloneable{
 
     private int V; // 顶点数
     private int E; // 边数
@@ -82,6 +82,12 @@ public class AdjMatrix implements Graph{
         return adj(v).size();
     }
 
+    @Override
+    public void removeEdge(int v, int w) {
+        validateVertex(v);
+        validateVertex(w);
+        adj[v][w] = adj[w][v] = 0;
+    }
 
     @Override
     public String toString() {
@@ -94,6 +100,22 @@ public class AdjMatrix implements Graph{
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    public Object clone() {
+        AdjMatrix cloned = null;
+        try {
+            cloned = (AdjMatrix) super.clone();
+            cloned.adj = new int[V][V];
+            for(int v = 0; v < V; v++){
+                for(int w = 0; w < V; w++){
+                    cloned.adj[v][w] = adj[v][w];
+                }
+            }
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return cloned;
     }
 
     public static void main(String[] args) {

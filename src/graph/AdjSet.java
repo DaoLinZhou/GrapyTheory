@@ -10,7 +10,7 @@ import java.util.TreeSet;
  * @author Daolin
  * @date 2020/08/25
  */
-public class AdjSet implements Graph{
+public class AdjSet implements Graph, Cloneable{
 
     private int V; // 顶点数
     private int E; // 边数
@@ -81,6 +81,32 @@ public class AdjSet implements Graph{
     public int degree(int v){
         validateVertex(v);
         return adj[v].size();
+    }
+
+    @Override
+    public void removeEdge(int v, int w) {
+        validateVertex(v);
+        validateVertex(w);
+        adj[v].remove(w);
+        adj[w].remove(v);
+    }
+
+    @Override
+    public Object clone() {
+        AdjSet cloned = null;
+        try {
+            cloned = (AdjSet) super.clone();
+            cloned.adj = new TreeSet[V];
+            for(int v = 0; v < V; v++){
+                cloned.adj[v] = new TreeSet<>();
+                for(int w : this.adj[v]){
+                    cloned.adj[v].add(w);
+                }
+            }
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return cloned;
     }
 
     @Override

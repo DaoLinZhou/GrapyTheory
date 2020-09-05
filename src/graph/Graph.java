@@ -19,6 +19,11 @@ public interface Graph {
     Iterable<Integer> adj(int v);
     int degree(int v);
 
+    void removeEdge(int v, int w);
+
     void validateVertex(int v);
+
+    Object clone();
+
 
 }
