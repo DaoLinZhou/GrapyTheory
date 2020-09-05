@@ -18,6 +18,7 @@ public class EulerPath {
     private int start;
     public EulerPath(Graph G){
         this.G = G;
+        start = 0;  // 如果所有点的度为偶数, 则从0开始寻路, 这个算法就变成求欧拉回路的算法了
     }
 
     public boolean hasEulerLoop(){
