@@ -22,8 +22,8 @@ public class EulerPath {
     }
 
     public boolean hasEulerLoop(){
-        CC cc = new CC(G);
-        if(cc.count() > 1){
+        CC cc = new CC(G);  // 求联通分量
+        if(cc.count() > 1){ // 只有无向联通图才有欧拉回路
             return false;
         }
         int count = 0;
