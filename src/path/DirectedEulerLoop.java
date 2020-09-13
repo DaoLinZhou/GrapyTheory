@@ -5,6 +5,7 @@ import graph.AdjSet;
 import graph.Graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -12,33 +13,27 @@ import java.util.LinkedList;
  * @author Daolin
  * @date 2020/09/04
  */
-public class EulerPath {
+public class DirectedEulerLoop {
 
     private Graph G;
-    private int start;
-    public EulerPath(Graph G){
-        if(G.isDirected())
-            throw new IllegalArgumentException("EulerPath only works in undirected graph.");
+
+    public DirectedEulerLoop(Graph G){
+        if(!G.isDirected())
+            throw new IllegalArgumentException("DirectedEulerLoop only works in directed graph.");
         this.G = G;
-        start = 0;  // 如果所有点的度为偶数, 则从0开始寻路, 这个算法就变成求欧拉回路的算法了
     }
 
     public boolean hasEulerLoop(){
-        CC cc = new CC(G);  // 求联通分量
-        if(cc.count() > 1){ // 只有无向联通图才有欧拉回路
-            return false;
-        }
-        int count = 0;
+//        CC cc = new CC(G);
+//        if(cc.count() > 1){
+//            return false;
+//        }
         for(int v = 0; v < G.V(); v++){
-            if((G.degree(v) & 1) == 1){
-                count ++;
-                start = v;
-            }
-            if(count > 2){
+            if(G.indegree(v) != G.outdegree(v)){
                 return false;
             }
         }
-        return count != 1; // count == 0 or count == 2
+        return true;
     }
 
     public ArrayList<Integer> result(){
@@ -48,10 +43,10 @@ public class EulerPath {
         }
         Graph g = (Graph) G.clone();
         Deque<Integer> stack = new LinkedList<>(); // stack 在java中有坑
-        int curv = start;
+        int curv = 0;
         stack.addFirst(curv);
         while(!stack.isEmpty()){
-            if(g.degree(curv) != 0){
+            if(g.outdegree(curv) != 0){
                 // 只要degree != 0 肯定能通过这个方式找到环, 因为所有顶点的degree是偶数
                 // 不可能出现进入一个点之后走出不来的情况
                 stack.push(curv);
@@ -63,17 +58,14 @@ public class EulerPath {
                 curv = stack.removeFirst();
             }
         }
+        Collections.reverse(res);
         return res;
     }
 
     public static void main(String[] args) {
-        Graph g = new AdjSet("g.txt");
-        EulerPath ep = new EulerPath(g);
-        System.out.println(ep.result());
-
-        Graph g2 = new AdjSet("g2.txt");
-        EulerPath ep2 = new EulerPath(g2);
-        System.out.println(ep2.result());
+        Graph g2 = new AdjSet("ug2.txt", true);
+        DirectedEulerLoop eulerLoop2 = new DirectedEulerLoop(g2);
+        System.out.println(eulerLoop2.result());
     }
 
 }

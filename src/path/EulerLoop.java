@@ -19,6 +19,8 @@ public class EulerLoop {
     private Graph G;
 
     public EulerLoop(Graph G){
+        if(G.isDirected())
+            throw new IllegalArgumentException("EulerLoop only works in undirected graph.");
         this.G = G;
     }
 

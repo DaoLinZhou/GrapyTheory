@@ -45,7 +45,7 @@ public class GraphDFS {
     }
 
     public static void main(String[] args) {
-        Graph g = new AdjSet("g.txt");
+        Graph g = new AdjSet("g2.txt");
         GraphDFS graphDFS = new GraphDFS(g);
         System.out.println(graphDFS.pre());
         System.out.println(graphDFS.post());

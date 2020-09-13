@@ -17,6 +17,8 @@ public class CycleDetection {
     private boolean hasCycle = false;
 
     public CycleDetection(Graph G) {
+        if(G.isDirected())
+            throw new IllegalArgumentException("CycleDetection only works in undirected graph.");
         this.G = G;
         pre = new int[G.V()];
         Arrays.fill(pre, -1);

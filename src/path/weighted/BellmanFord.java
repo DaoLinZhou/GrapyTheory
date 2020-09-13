@@ -1,4 +1,4 @@
-package path;
+package path.weighted;
 
 import graph.WeightedGraph;
 
