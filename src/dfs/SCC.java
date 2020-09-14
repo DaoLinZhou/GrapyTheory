@@ -18,9 +18,8 @@ public class SCC {
     private int sccount = 0;
 
     public SCC(Graph G) {
-        if(!G.isDirected()) {
+        if(!G.isDirected())
             throw new IllegalArgumentException("SCC only works on directed graph");
-        }
         this.G = G;
         visited = new int[G.V()];
         Arrays.fill(visited, -1);
