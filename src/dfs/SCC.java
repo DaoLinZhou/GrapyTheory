@@ -14,7 +14,7 @@ import java.util.Collections;
 public class SCC {
 
     private Graph G;
-    private int[] visited;
+    private int[] visited = null;
     private int sccount = 0;
 
     public SCC(Graph G) {
