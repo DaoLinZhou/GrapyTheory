@@ -70,6 +70,10 @@ public class BipartitionDetection {
         return res;
     }
 
+    public int[] colors(){
+        return color;
+    }
+
     public static void main(String[] args) {
         Graph g = new AdjSet("g.txt");
         BipartitionDetection bg = new BipartitionDetection(g);

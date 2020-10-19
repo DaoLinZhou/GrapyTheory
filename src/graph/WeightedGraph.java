@@ -22,16 +22,16 @@ public class WeightedGraph implements Graph, Cloneable {
     private int[] indegrees, outdegrees;
     private TreeMap<Integer, Double>[] adj;
 
+
     public WeightedGraph(String filename){
         this(filename, false);
     }
-
 
     public WeightedGraph(String filename, boolean directed){
         this.directed = directed;
         File file = new File(filename);
         try(Scanner scanner = new Scanner(file)){
-
+            E = 0;
             V = scanner.nextInt();
             if(V < 0){
                 throw new IllegalArgumentException("V must be non-negative");
@@ -42,33 +42,58 @@ public class WeightedGraph implements Graph, Cloneable {
                 adj[i] = new TreeMap<Integer, Double>();
             indegrees = new int[V];
             outdegrees = new int[V];
-            E = scanner.nextInt();
-            if(E < 0){
+            int e = scanner.nextInt();
+            if(e < 0){
                 throw new IllegalArgumentException("E must be non-negative");
             }
 
-            for(int i = 0; i < E; i++){
+            for(int i = 0; i < e; i++){
                 int a = scanner.nextInt();
-                validateVertex(a);
                 int b = scanner.nextInt();
-                validateVertex(b);
                 double weight = scanner.nextDouble();
-
-                if(a == b) throw new IllegalArgumentException("Self Loop id Detected!");
-                if(adj[a].containsKey(b)) throw new IllegalArgumentException("Parallel Edges are Detected! ");
-
-                adj[a].put(b, weight);
-                if(directed){
-                    indegrees[b] ++;
-                    outdegrees[a] ++;
-                }
-                if(!directed)
-                    adj[b].put(a, weight);
+                addEdge(a, b, weight);
             }
 
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public WeightedGraph(int V, boolean directed){
+        this.V = V;
+        this.directed = directed;
+        this.E = 0;
+        indegrees = new int[V];
+        outdegrees = new int[V];
+
+        adj = new TreeMap[V];
+        for(int i = 0; i < adj.length; i++){
+            adj[i] = new TreeMap<>();
+        }
+    }
+
+    public void setWeight(int v, int w, double newWeight){
+        if(!hasEdge(v, w))
+            throw new IllegalArgumentException(String.format("No edge %d-%d", v, w));
+        adj[v].put(w, newWeight);
+        if(!directed)
+            adj[w].put(v, newWeight);
+    }
+
+    public void addEdge(int a, int b, double weight){
+        validateVertex(a);
+        validateVertex(b);
+        if(a == b) throw new IllegalArgumentException("Self Loop id Detected!");
+        if(adj[a].containsKey(b)) throw new IllegalArgumentException("Parallel Edges are Detected! ");
+
+        adj[a].put(b, weight);
+        if(directed){
+            indegrees[b] ++;
+            outdegrees[a] ++;
+        }
+        if(!directed)
+            adj[b].put(a, weight);
+        E ++;
     }
 
     public WeightedGraph(TreeMap<Integer, Double>[] rAdj, boolean directed) {
